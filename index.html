@@ -34,7 +34,22 @@
         productVersion: "0.1",
         // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
         // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
-      });
+      }).then((unityInstance) => {
+		gameInstance = unityInstance;
+		gameInstance.SendMessage("Canvas","SetData","https://minio.dev.ftech.ai:443/f1dog/bkgr/01_0p0p0_p1f324116_1p0p0f1p-1p1.webp");
+		});
+	  function FixInputOnSubmit() {
+			document.getElementById("fixInput").blur();
+			event.preventDefault();
+		};
+    </script>
+	<div>
+		<form onsubmit="FixInputOnSubmit()" autocomplete="off" style="width: 0px; height: 0px; position: absolute; top: -9999px;">
+			<input type="text" id="fixInput" 
+			oninput="gameInstance.SendMessage('_WebGLKeyboard', 'ReceiveInputChange', document.getElementById('fixInput').value)" 
+			onblur="gameInstance.SendMessage('_WebGLKeyboard', 'LoseFocus')" style="font-size: 42px;">
+		</form>
+	</div>
     </script>
   </body>
 </html>
