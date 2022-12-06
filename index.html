@@ -24,15 +24,8 @@
 			<div id="unity-build-title">F1 Dog</div>
 		  </div>
 		</div>
-	  
-		<form onsubmit="FixInputOnSubmit()" autocomplete="off" style="width: 0px; height: 0px; position: absolute; top: -9999px;">
-			<input type="text" id="fixInput" 
-			oninput="gameInstance.SendMessage('_WebGLKeyboard', 'ReceiveInputChange', document.getElementById('fixInput').value)" 
-			onblur="gameInstance.SendMessage('_WebGLKeyboard', 'LoseFocus')" style="font-size: 42px;">
-		</form>
     </div>
     <script>
-	
       var container = document.querySelector("#unity-container");
       var gamePanel = document.querySelector("#game-panel");
       var canvas = document.querySelector("#unity-canvas");
@@ -78,7 +71,7 @@
 	    }
 		
 	    var ratioSize = 16 / 9;
-		if((window.innerWidth / (window.innerHeight - 38)) < ratioSize){
+		if((window.innerWidth / (window.innerHeight - fullscreenButton.offsetHeight)) < ratioSize){
 		    var meta = document.createElement('meta');
 			meta.name = 'viewport';
 			meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
@@ -87,6 +80,20 @@
 			gamePanel.style.width = "100%";
 			gamePanel.style.height = ( 100 * window.innerWidth / window.innerHeight / ratioSize) + "%";
 			gamePanel.style.position = "fixed";
+		}
+		else if(window.innerWidth < 1280){
+			if(ratioView > (21 / 10)){
+				gamePanel.style.width = (window.innerWidth - fullscreenButton.offsetWidth) + "px";
+				gamePanel.style.height = "100%";
+				gamePanel.style.left = "0%";
+				gamePanel.style.transform = "translate(0%, -50%)";
+				fullscreenButton.style.marginTop = "-38px";
+				fullscreenButton.style.marginRight = "-38px";
+			}
+			else{
+				gamePanel.style.width = window.innerWidth + "px";
+				gamePanel.style.height = (720 * gamePanel.style.width / window.innerWidth)  + "px";
+			}
 		}
 		else{
 			gamePanel.style.width = "1280px";
@@ -126,5 +133,12 @@
       };
       document.body.appendChild(script);
     </script>
+	<div>
+		<form onsubmit="FixInputOnSubmit()" autocomplete="off" style="width: 0px; height: 0px; position: absolute; top: -9999px;">
+			<input type="text" id="fixInput" 
+			oninput="gameInstance.SendMessage('_WebGLKeyboard', 'ReceiveInputChange', document.getElementById('fixInput').value)" 
+			onblur="gameInstance.SendMessage('_WebGLKeyboard', 'LoseFocus')" style="font-size: 42px;">
+		</form>
+	</div>
   </body>
 </html>
